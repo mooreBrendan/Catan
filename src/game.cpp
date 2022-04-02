@@ -1,4 +1,5 @@
 #include "main.hpp"
+#include "bits/stdc++.h"
 
 using namespace CATAN;
 // checks if game is over
@@ -283,7 +284,8 @@ Game::Game() {
   for (int i = 0; i < numPlayers; i++) {
     players[i] = Player();
   }
-  // TODO: shuffle players
+  // DEBUG: shuffle players
+  std::shuffle(players, players + numPlayers, std::default_random_engine(0));
 
   // initialize the histogram of rolls, to be displayed at end of game
   for (int i = 0; i < 11; i++) {

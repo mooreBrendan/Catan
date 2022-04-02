@@ -39,6 +39,19 @@ void Player::clearHand() {
 // prompts user to remove a card
 void Player::removeCard() {}
 
+// checks if player can afford a purchase
+bool Player::checkCost(const int *cost) {
+  for (int i = 0; i < NUM_RESOURCES; i++) {
+    if (resources[i] < cost[i]) {
+      return false;
+    }
+  }
+  for (int i = 0; i < NUM_RESOURCES; i++) {
+    resources[i] -= cost[i];
+  }
+  return true;
+}
+
 // handles the player initialization
 Player::Player() {
   for (int i = 0; i < NUM_RESOURCES; i++) {

@@ -19,6 +19,7 @@ public:
   Player();
   void clearHand();
   void runTurn();
+  bool checkCost(const int *);
   void getResource(Resources, int);
   void acceptTrade(Player *, int *, int *);
 };
