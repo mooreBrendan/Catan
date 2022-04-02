@@ -113,12 +113,15 @@ void Node::giveResource(Resources resource) {
 
 // set who owns the node
 void Node::setPlayer(Player *pl) {
+  TOWN_COST;
+  // TODO: check player has cards
   player = pl;
   teir = 1;
 }
 
 // upgrade the town on a node
 void Node::upgrade() {
+  CITY_COST;
   if (teir == 1) {
     // TODO: check player has cards
     teir += 1;
@@ -182,7 +185,11 @@ Edge::Edge(Node *N1, Node *N2) {
 }
 
 // sets the owner of the edge
-void Edge::setPlayer(Player *pl) { player = pl; }
+void Edge::setPlayer(Player *pl) {
+  ROAD_COST;
+  // TODO: remove cost from player
+  player = pl;
+}
 
 // returns anode at position 1 or 2
 Node *Edge::getNode(int pos) {
