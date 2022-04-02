@@ -34,8 +34,8 @@ public:
   void handleWinner();
   int roll();
   void run();
-  void save(); // TODO: handle saving
-  void load(); // TODO: handle loading save data
+  void save();
+  void load();
 };
 }
 

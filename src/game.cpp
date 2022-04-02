@@ -294,6 +294,14 @@ Game::Game() {
   generateBoard();
 }
 
+// TODO: handle saving
+// handles saving the game
+void Game::save() {}
+
+// TODO: handle loading save data
+// handles loading the game
+void Game::load() {}
+
 // handles what happens when the game is over
 void Game::handleWinner() {
   // TODO: handle player win
