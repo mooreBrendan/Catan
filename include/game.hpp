@@ -20,15 +20,14 @@ private:
   void initTileArray();
   void initTileGraph();
   void initTileRolls();
-  void generateEdges();
   void initTileResources();
   Node *getNewNodePointer();
 
 public:
   Game();
   ~Game();
-  int askNumPlayers();
   void generateBoard();
+  int askNumPlayers();
   void playerBoardSetup();
   bool isOver();
   void handleWinner();

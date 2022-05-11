@@ -1,5 +1,4 @@
 #include "main.hpp"
-#include "bits/stdc++.h"
 
 using namespace CATAN;
 // checks if game is over
@@ -9,14 +8,6 @@ bool Game::isOver() { return ended; }
 int Game::askNumPlayers() {
   // TODO: actually prompt for number
   return 4;
-}
-
-// DEBUG: not needed?, can remove
-// generates edges for each tile
-void Game::generateEdges() {
-  for (int i = 0; i < numTiles; i++) {
-    tiles[i].formEdges();
-  }
 }
 
 // creates the array to store the tles
@@ -41,14 +32,6 @@ void Game::initTileArray() {
   // create the array
   int temp = sizeof(Tile) * numTiles; // DEBUG: not necessary, need to remove
   tiles = new Tile[numTiles];
-}
-
-// DEBUG: not needed, can remove with testing
-// allocates a new node and returns its address
-Node *Game::getNewNodePointer() {
-  Node *temp = (Node *)malloc(sizeof(Node));
-  *temp = Node();
-  return temp;
 }
 
 // DEBUG: not needed, can remove with testing
@@ -188,7 +171,7 @@ void Game::initTileGraph() {
 
 // forming edges
 #ifdef DEBUG
-  std::out << "forming edges" << std::endl;
+  std::cout << "forming edges" << std::endl;
 #endif
   for (int i = 0; i < numNodes; i++) {
     tiles[i].formEdges();

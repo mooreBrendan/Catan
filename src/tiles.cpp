@@ -46,8 +46,8 @@ Tile::Tile() {
 void Tile::addNeighbor(Tile neighbor, int side) {
   int dif = NUM_SIDES / 2;
 #ifdef DEBUG
-  std::out << side << ":" << (side + dif + 1) % NUM_SIDES << std::endl;
-  std::out << side + 1 << ":" << (side + dif - 1) % NUM_SIDES << std::endl;
+  std::cout << side << ":" << (side + dif + 1) % NUM_SIDES << std::endl;
+  std::cout << side + 1 << ":" << (side + dif - 1) % NUM_SIDES << std::endl;
 #endif
   nodes[side] = neighbor.getNode((side + dif + 1) % NUM_SIDES);
   nodes[side + 1] = neighbor.getNode((side + dif - 1) % NUM_SIDES);

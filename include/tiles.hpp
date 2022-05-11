@@ -23,10 +23,6 @@ class Edge;
 *****************************************************************
 *****************************************************************/
 
-// limits what the resource values can be
-// count returns the number of elements in the enum
-enum Resources : const int { none = -1, logs, wool, stone, bricks, wheat };
-
 // Class for handling the tiles in Catan
 // Tile Node layout, edges go between node of same index and one more mod 6
 //			_____
