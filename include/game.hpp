@@ -6,7 +6,7 @@
 namespace CATAN {
 // Class for storing information about the game
 class Game {
-private:
+ private:
   Tile *tiles;
   Player *players;
   Node *nodes;
@@ -23,7 +23,7 @@ private:
   void initTileResources();
   Node *getNewNodePointer();
 
-public:
+ public:
   Game();
   ~Game();
   void generateBoard();

@@ -26,8 +26,7 @@ void Tile::setRobber(bool state) { hasRobber = state; }
 
 void Tile::giveResources() {
   Resources r = none;
-  if (hasRobber || resource == r)
-    return;
+  if (hasRobber || resource == r) return;
   for (int i = 0; i < NUM_SIDES; i++) {
     nodes[i]->giveResource(resource);
   }
@@ -41,14 +40,14 @@ Tile::Tile() {
     edges[i] = nullptr;
     nodes[i] = nullptr;
   }
+
+  hex = sf::CircleShape(80, 6);
 }
 
 void Tile::addNeighbor(Tile neighbor, int side) {
   int dif = NUM_SIDES / 2;
-#ifdef DEBUG
-  std::cout << side << ":" << (side + dif + 1) % NUM_SIDES << std::endl;
-  std::cout << side + 1 << ":" << (side + dif - 1) % NUM_SIDES << std::endl;
-#endif
+  DEBUG_MSG(side << ":" << (side + dif + 1) % NUM_SIDES);
+  DEBUG_MSG(side + 1 << ":" << (side + dif - 1) % NUM_SIDES);
   nodes[side] = neighbor.getNode((side + dif + 1) % NUM_SIDES);
   nodes[side + 1] = neighbor.getNode((side + dif - 1) % NUM_SIDES);
 }
@@ -78,10 +77,8 @@ void Tile::formEdges() {
 
 Tile::~Tile() {
   for (int i = 0; i < NUM_SIDES; i++) {
-    if (nodes[i] != nullptr)
-      free(nodes[i]);
-    if (edges[i] != nullptr)
-      free(edges[i]);
+    if (nodes[i] != nullptr) free(nodes[i]);
+    if (edges[i] != nullptr) free(edges[i]);
   }
 }
 
@@ -102,12 +99,12 @@ Tile::~Tile() {
 Node::Node() {
   player = nullptr;
   teir = 0;
+  setRadius(10);
 }
 
 // gives a resource to the owner of a node
 void Node::giveResource(Resources resource) {
-  if (player == nullptr)
-    return;
+  if (player == nullptr) return;
   player->getResource(resource, teir);
 }
 

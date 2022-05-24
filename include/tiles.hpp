@@ -31,14 +31,15 @@ class Edge;
 //		\4   3/
 //     -----
 class Tile {
-private:
+ private:
   Resources resource;
   int rollNum;
   bool hasRobber;
   Node *nodes[NUM_SIDES];
   Edge *edges[NUM_SIDES];
+  sf::CircleShape hex;
 
-public:
+ public:
   Tile();
   ~Tile();
   void genNodes();
@@ -50,7 +51,7 @@ public:
   void giveResources();
   void setRobber(bool);
   Node *getNode(int);
-  void addSide(int, Edge *); // attach a side
+  void addSide(int, Edge *);  // attach a side
   void addPoint(int, Node *);
 };
 
@@ -67,14 +68,14 @@ public:
 *****************************************************************
 *****************************************************************/
 
-class Node {
-private:
+class Node : sf::CircleShape {
+ private:
   Player *player;
   int teir;
   Edge **edges;
   int numEdges;
 
-public:
+ public:
   Node();
   int alreadyConnected(Node *);
   void giveResource(Resources);
@@ -96,12 +97,12 @@ public:
 **************************************************************
 *************************************************************/
 
-class Edge {
-private:
+class Edge : sf::RectangleShape {
+ private:
   Player *player;
   Node *nodes[2];
 
-public:
+ public:
   Edge(Node *, Node *);
   void setPlayer(Player *);
   Node *getNode(int);

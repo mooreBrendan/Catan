@@ -13,118 +13,34 @@ int Game::askNumPlayers() {
 // creates the array to store the tles
 void Game::initTileArray() {
   // calculate the neccesary number of tiles
-  numTiles = 2 * SIDE_LENGTH - 1; // calcualte for mid row
+  numTiles = 2 * SIDE_LENGTH - 1;  // calcualte for mid row
 
   // rows decreasing in size to top&bot row
   for (int i = 0; i < SIDE_LENGTH; i++) {
-    numTiles += 2 * (SIDE_LENGTH + i); // add tiles for top AND bottom
+    numTiles += 2 * (SIDE_LENGTH + i);  // add tiles for top AND bottom
   }
 
-#ifdef DEBUG
-  // debugging print statements
-  std::cout << "Tile size: " << sizeof(Tile) << std::endl;
-  std::cout << "Node size: " << sizeof(Node) << std::endl;
-  std::cout << "Node* size: " << sizeof(Node *) << std::endl;
-  std::cout << "Edge size: " << sizeof(Edge) << std::endl;
-  std::cout << "Edge* size: " << sizeof(Edge *) << std::endl;
-#endif
+  DEBUG_MSG("Tile size: " << sizeof(Tile));
+  DEBUG_MSG("Node size: " << sizeof(Node));
+  DEBUG_MSG("Node* size: " << sizeof(Node *));
+  DEBUG_MSG("Edge size: " << sizeof(Edge));
+  DEBUG_MSG("Edge* size: " << sizeof(Edge *));
 
   // create the array
-  int temp = sizeof(Tile) * numTiles; // DEBUG: not necessary, need to remove
   tiles = new Tile[numTiles];
 }
 
 // DEBUG: not needed, can remove with testing
-/*
-void Game::initTileGraph() {
-  int index = 0; // stores the current working index w/o calculations
-  int prevIndex = -1;
-  Node *tempNode; // stores the node to be merged
-
-  // increasing size
-  for (int i = 0; i < SIDE_LENGTH; i++) {
-    // initialize top-left & top node
-    tiles[index].addPoint(0, getNewNodePointer());
-    if (prevIndex < 0) { // merge above tiles with the new tiles
-      tiles[index].addPoint(1, getNewNodePointer());
-      tempNode = getNewNodePointer();
-      tiles[index].addPoint(2, tempNode);
-      for (int j = 1; j < SIDE_LENGTH + i; j++) {
-        tiles[index + j].addPoint(0, tempNode);
-        tiles[index + j].addPoint(1, getNewNodePointer());
-        tempNode = getNewNodePointer();
-        tiles[index].addPoint(2, tempNode);
-      }
-    } else {
-      // top
-      tempNode = getNewNodePointer();
-      tiles[index].addPoint(1, tempNode);
-      tiles[prevIndex].addPoint(4, tempNode);
-      // top-left
-      tempNode = getNewNodePointer();
-      tiles[index].addPoint(2, tempNode);
-      tiles[prevIndex].addPoint(5, tempNode);
-      for (int j = 1; j < SIDE_LENGTH + i; j++) {
-        // top-right
-        tiles[index + j].addPoint(0, tempNode);
-        // top
-        tempNode = getNewNodePointer();
-        tiles[index + j].addPoint(1, tempNode);
-        tiles[prevIndex + j].addPoint(4, tempNode);
-        // top-left
-        tempNode = getNewNodePointer();
-        tiles[index].addPoint(2, tempNode);
-        tiles[prevIndex + j].addPoint(5, tempNode);
-      }
-    }
-
-    prevIndex = index;
-    index += SIDE_LENGTH + i;
-  }
-  // add bottom-left & bottom-right nodes of middle row
-  tiles[prevIndex].addPoint(3, getNewNodePointer());
-  tiles[index - 1].addPoint(5, getNewNodePointer());
-
-  // decreasing size
-  for (int i = 0; i < SIDE_LENGTH - 1; i++) {
-    for (int j = SIDE_LENGTH - 1; j >= 0; j++) {
-      // top-right
-      tempNode = getNewNodePointer();
-      tiles[index + j].addPoint(0, tempNode);
-      tiles[prevIndex + j].addPoint(4, tempNode);
-      for (int j = 1; j < SIDE_LENGTH + i; j++) {
-        // top
-        tempNode = getNewNodePointer();
-        tiles[index + j].addPoint(1, tempNode);
-        tiles[prevIndex + j].addPoint(5, tempNode);
-        tiles[prevIndex + j + 1].addPoint(3, tempNode);
-
-        // top-left
-        tempNode = getNewNodePointer();
-        tiles[index].addPoint(2, tempNode);
-        tiles[prevIndex + j + 1].addPoint(4, tempNode);
-      }
-    }
-
-    // add bottom nodes
-    tiles[prevIndex].addPoint(3, getNewNodePointer());
-    for (int i = 0; i < SIDE_LENGTH; i++) {
-      tiles[prevIndex + i].addPoint(4, getNewNodePointer());
-      tempNode = getNewNodePointer();
-      tiles[prevIndex + i].addPoint(5, tempNode);
-      tiles[prevIndex + i + 1].addPoint(3, tempNode);
-    }
-  }
-}
-*/
 
 // lays out the tiles and their neighbors
 void Game::initTileGraph() {
   // create first tile
-  int currInd, prevInd;
+  int currInd = 1;
+  int prevInd = 0;
+  DEBUG_MSG("first gen nodes");
   tiles[0].genNodes();
-  currInd = 1;
 
+  DEBUG_MSG("first row init");
   // create first row, add neighbor to left
   for (int i = 1; i < SIDE_LENGTH; i++) {
     tiles[currInd].addNeighbor(tiles[i - 1], 5);
@@ -133,6 +49,7 @@ void Game::initTileGraph() {
   }
   prevInd = SIDE_LENGTH;
 
+  DEBUG_MSG("second row on");
   // create 2nd-mid rows, add neighbors to left,and tops
   for (int i = 1; i < SIDE_LENGTH; i++) {
     // create first tile in row, nothing to left
@@ -151,6 +68,7 @@ void Game::initTileGraph() {
     }
   }
 
+  DEBUG_MSG("mid row on");
   // create row one below mid->bottom, left and tops, different order
   for (int i = 1; i < SIDE_LENGTH; i++) {
     // create first tile, nothing to left
@@ -169,10 +87,8 @@ void Game::initTileGraph() {
     }
   }
 
-// forming edges
-#ifdef DEBUG
-  std::cout << "forming edges" << std::endl;
-#endif
+  // forming edges
+  DEBUG_MSG("forming edges");
   for (int i = 0; i < numNodes; i++) {
     tiles[i].formEdges();
   }
@@ -194,7 +110,7 @@ void Game::initTileResources() {
     do {
       res = rand() % NUM_RESOURCES;
     } while (possibleTiles[res] <= 0);
-    tiles[i].setResource(static_cast<Resources>(res)); // convert to enum
+    tiles[i].setResource(static_cast<Resources>(res));  // convert to enum
     possibleTiles[res]--;
   }
 
@@ -231,9 +147,16 @@ void Game::run() {
 
 // runs the sub tasks for generating the game board
 void Game::generateBoard() {
+  DEBUG_MSG("done init tile array");
   initTileArray();
+
+  DEBUG_MSG("done init graph");
   initTileGraph();
+
+  DEBUG_MSG("done init resource");
   initTileResources();
+
+  DEBUG_MSG("done init tile rolls");
   initTileRolls();
 }
 
@@ -242,7 +165,7 @@ int Game::roll() {
   int dice1, dice2;
   dice1 = (rand() % 6) + 1;
   dice2 = (rand() % 6) + 1;
-  hist[dice1 + dice2 - 1]++; // add to histogram
+  hist[dice1 + dice2 - 1]++;  // add to histogram
   return dice1 + dice2;
 }
 
@@ -259,7 +182,8 @@ Game::Game() {
   ended = false;
   playerTurn = 0;
 
-  srand(time(NULL)); // seed the random number generator to get new games
+  srand(time(NULL));  // seed the random number generator to get new games
+  DEBUG_MSG("done simple game init init");
 
   // initialize player objects
   numPlayers = askNumPlayers();
@@ -267,8 +191,11 @@ Game::Game() {
   for (int i = 0; i < numPlayers; i++) {
     players[i] = Player();
   }
+  DEBUG_MSG("done game array init");
+
   // DEBUG: shuffle players
   std::shuffle(players, players + numPlayers, std::default_random_engine(0));
+  DEBUG_MSG("done game shuffle init");
 
   // initialize the histogram of rolls, to be displayed at end of game
   for (int i = 0; i < 11; i++) {
@@ -290,7 +217,7 @@ void Game::load() {}
 // handles what happens when the game is over
 void Game::handleWinner() {
   // TODO: handle player win
-  std::cout << "a player has won" << std::endl;
+  DEBUG_MSG("a player has won");
 }
 
 // destroys the object and frees dynamically created items
